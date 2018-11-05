@@ -1,0 +1,54 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+    p1 := l1
+    p2 := l2
+    //标志位，记录进位
+    carry := 0
+    //记录初始地址，它的Next是第一个元素。
+    result := &ListNode{}
+    //current 用来计算新链表
+    current := result
+    newnode := result
+    for p1 != nil || p2 != nil {
+        var v1,v2 int
+        if p1 != nil {
+            v1 = p1.Val
+        }
+        if p2 != nil {
+            v2 = p2.Val
+        }
+        v := v1 + v2 + carry
+        carry = v / 10
+        //current的Next地址
+        
+        newnode = &ListNode{
+            Val: v % 10,
+        }
+        //让插入的节点指向当前节点的下一个节点
+        newnode.Next = current.Next
+        //当前节点的下一个节点指向新插入的节点
+        current.Next = newnode
+        //下一个节点
+        if p1 != nil {
+            p1 = p1.Next
+        }
+        if p2 != nil {
+            p2 = p2.Next
+        }        
+    }   
+    if carry > 0 {
+         newnode = &ListNode{
+            Val: carry,
+        }
+        newnode.Next = current.Next
+        current.Next = newnode
+    }
+    return result.Next
+    
+}
